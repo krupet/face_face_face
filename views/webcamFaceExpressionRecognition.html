@@ -157,6 +157,8 @@
             faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence)
         }
 
+        postResults(ts, result)
+
         setTimeout(() => onPlay())
     }
 
@@ -175,8 +177,21 @@
 
     function updateResults() {}
 
+    function postResults(timestamp, expressions) {
+        const payload = {}
+        payload["user_id"] = "ololo"
+        payload["ts"] = timestamp
+        payload["expressions"] = JSON.stringify(expressions)
+
+        $.post("http://localhost:8000/data", {
+            type: "POST",
+            dataType: 'json',
+            async: false,
+            data:JSON.stringify(payload)
+        })
+    }
+
     $(document).ready(function() {
-        renderNavBar('#navbar', 'webcam_face_expression_recognition')
         initFaceDetectionControls()
         run()
     })
